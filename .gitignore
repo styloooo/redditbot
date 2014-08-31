@@ -1,4 +1,7 @@
 settings.py
-bot.py~
 .gitignore~
 .ipynb_checkpoints
+*.ipynb
+debug.log
+*.py~
+*.pyc

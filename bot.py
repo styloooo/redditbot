@@ -91,30 +91,36 @@ def collect():
 cycle = 0
 
 while True:
-    if cycle == 1 and debug() == True:
+
+    if cycle >= 1 and debug() == True:
         print "Cycled from hibernate"   
-    x = 1
-    while x < 2:
-         #pulls page data based on subreddit
-        titles = r.get_subreddit(dir['subreddit']) #pulls titles out of page data
-        print titles
-        for title in titles.get_hot(limit = dir['pollingVal']):
-            print title.title
+    x = True
+    
+    while x == True:
+    
+        submissionPuller = r.get_content(url = 'http://www.reddit.com/r/'+str(dir['subreddit']+'/new/'),
+        limit = int(dir['pollingVal'])) #pulls page data based on subreddit
+        
+        for submission in submissionPuller:
+            title = submission.title
+            print title
             keywordFound = 0
+            b = True
             for keyword in dir['keywords']:
-                if x < 2:
-                    if keyword in title.title.lower(): #If the title contains a keyword
-                        title.add_comment(dir['post']) #post comment
+                if b == True:
+                    if keyword in title.lower(): #If the title contains a keyword
+                        submission.add_comment(dir['post']) #post comment
                         keywordFound = 1
                         print "posted"
-                        break
-                    else:
-                        x = 3
-                else:
-                    break
+                        b = False
+                        #break
+                    #else:
+                        #x = 3
+               # else:
+                   # break
             if not keywordFound:
                 print "No key words found, hibernating for ", hibernate, " seconds."
                 time.sleep(int(hibernate))
                 cycle = 1
-                break
+                #break
 
