@@ -5,3 +5,4 @@ settings.py
 debug.log
 *.py~
 *.pyc
+*.md~
