@@ -1,6 +1,6 @@
 Redditbot - a simple bot for filtering posts and posting to them
 =========
--v 0.01
+-v 0.03
 
 ABOUT
 =====
