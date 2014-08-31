@@ -20,7 +20,7 @@ def debug():
 print "Debug set to: ", debug()
 
 if debug() == True:
-    sleepTime = str(raw_input("How many seconds should we wait before we pull topics? \n")) or int(myTime)
+    sleepTime = str(raw_input("How many seconds should we wait between topic pulls? \n")) or int(myTime)
     hibernate = int(sleepTime)
     
 else:
@@ -53,31 +53,6 @@ def debugger(debug):
                 print var,"is equal to", myvalue
 debugger(debug)
 
-#myUsername = str(raw_input("Username: \n")) or str(myUsername)
-
-
-
-#myPassword = str(raw_input("Password: \n")) or str(myPassword)
-
-
-
-#user_agent = str(raw_input("State your user agent: \n")) or str(myAgent)
-
-
-
-
-#subreddit = str(raw_input("Subreddit to search: \n")) or str(mySub)
-
-
-#post = str(raw_input("Text to post: \n")) or str(myPost)
-
-
-#prewords = raw_input('What keywords are we looking for? \n (separate keywords with a space)')
-#keywords = map(str, prewords.split()) or myKeys
-
-
-#pollingVal = raw_input("How many topics should we pull? \n") or int(myPoll)
-
 
 if debug() == False:
     r.login(myUsername,myPassword)
@@ -104,23 +79,24 @@ while True:
         for submission in submissionPuller:
             title = submission.title
             print title
-            keywordFound = 0
+            #keywordFound = 0
             b = True
             for keyword in dir['keywords']:
+            
                 if b == True:
-                    if keyword in title.lower(): #If the title contains a keyword
+                
+                    if keyword in submission.title.lower(): #If the title contains a keyword
                         submission.add_comment(dir['post']) #post comment
                         keywordFound = 1
                         print "posted"
                         b = False
-                        #break
-                    #else:
-                        #x = 3
-               # else:
-                   # break
-            if not keywordFound:
-                print "No key words found, hibernating for ", hibernate, " seconds."
-                time.sleep(int(hibernate))
-                cycle = 1
-                #break
+                    else:
+                        print "no post"
+                        b = False
+                       
+            #if not keywordFound:
+                #print "No key words found, hibernating for ", hibernate, " seconds."
+                #time.sleep(int(hibernate))
+                #cycle = 1
+                
 

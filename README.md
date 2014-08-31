@@ -14,15 +14,15 @@ GET STARTED
 ===========
 
 1. Create a reddit account for your bot to use
-2. Create settings.py
+2. (optional)Create settings.py
       1. Assign myUsername to your reddit account name
       2. Assign myPassword to your reddit account password
-3. Edit variables in bot.py to match your goals
-      1. 'user_agent' should be set in accordance with Reddit's rules: https://github.com/reddit/reddit/wiki/API
-      2. 'subreddit' should be assigned to the name of the subreddit you wish to watch
-      3. 'post' should be assigned to the text you wish to post
-      4. 'keywords'should be a list containing the words you are searching for
-      5. 'pollingVal' should be set to the number of posts you want to pull every 'time' minutes
-      6. 'time' should be the number of minutes you want the program to wait after exhausting the list of keywords to search
+      3. Assign myAgent to your desired User Agent
+      4. Assign mySub to your targeted subreddit
+      5. Assign myPost to your desired content for submit
+      6. Assign myPoll to the number of submissions you are requesting
+      7. Assign myTime to the number of minutes between requests (debugging mode returns seconds)
+      8. Assign myKeys to a list of your desired keywords
+3. Run bot.py
 
 Comments, suggestions, questions: ejmurra2@illinois.edu
