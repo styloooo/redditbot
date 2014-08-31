@@ -17,20 +17,25 @@ user_agent = ("Script to inform new users of"
      
 r = praw.Reddit(user_agent = user_agent) #sets r to PRAW module
 
-subreddit = r.get_subreddit('starcraft') #assigns subbreddit to search
+subreddit = 'starcraft'
 
 post = "Test text." #sets text to be submitted as comment
 
 keywords = ["new player", "noob", "beginner", "help"] #keywords to search for in post title
 
+pollingVal = 100
+time = 10
+hibernate = time * 60
+
 
 r.login(myUsername,myPassword) #logs in
 
 def collect(subreddit):
-    return r.get_new(limit=100) #collects posts to search for keywords
+    return r.get_new(pollingVal) #collects posts to search for keywords
 
 while True:
-    titles = collect(subreddit) #takes submissions and assigns them to title
+    generator = r.get_subreddit(subreddit) #assigns subbreddit to search
+    titles = collect(generator) #takes submissions and assigns them to title
     for title in titles:
         keywordFound = 0
         for keyword in keywords:
@@ -42,5 +47,5 @@ while True:
                 break
         if not keywordFound:
             print "No key words found, hibernating"
-            time.sleep(900)
+            time.sleep(hibernate)
 
