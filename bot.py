@@ -59,11 +59,44 @@ if debug() == False:
 else:
     print "No login during debug"
 
-def collect():
-    return r.get_content(url = 'http://www.reddit.com/r/'+str(dir['subreddit']+'/new/'),
-    limit = int(dir['pollingVal'])) #collects posts to search for keywords
+#cycle = 0
+def handleRateLimit(cycle=1):
+    while True:
+        try:
+            if cycle > 1 and debug() == True:
+                print "Cycled", cycle, "times"   
+            x = True
+            
+            while x == True:
+            
+                submissionPuller = r.get_content(url = 'http://www.reddit.com/r/'+str(dir['subreddit']+'/new/'),
+                limit = int(dir['pollingVal'])) #pulls page data based on subreddit
+                
+                for submission in submissionPuller:
+                    title = submission.title
+                    print title
+                    b = True
+                    for keyword in dir['keywords']:
+                    
+                        if b == True:
+                            #pdb.set_trace()
+                            if keyword in submission.title.lower(): #If the title contains a keyword
+                                #submission.add_comment(dir['post']) #post comment
+                                keywordFound = 1
+                                print "posted"
+                                b = False
+                                cycle += 1
+                            else:
+                                print "no post"
+                                b = False
+                                cycle += 1
+        except praw.errors.RateLimitExceeded as error:
+            print '\tSleeping for %d seconds' % error.sleep_time
+            time.sleep(error.sleep_time)
+            
+handleRateLimit()
 
-cycle = 0
+'''cycle = 0
 
 while True:
 
@@ -99,4 +132,4 @@ while True:
                 #time.sleep(int(hibernate))
                 #cycle = 1
                 
-
+'''
