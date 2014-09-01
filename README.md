@@ -1,14 +1,11 @@
 Redditbot - a simple bot for filtering posts and posting to them
 =========
--v 0.03
+-v 0.10
 
 ABOUT
 =====
 
-Redditbot was originally created as a bot for r/starcraft. It finds posts from users asking for help and then 
-links them to available resources by searching for keywords in the 100 newest posts of a target subreddit
-and submitting a comment if any of the keywords are found in the post title. Feel free to disect
-and use Redditbot for your own projects.
+Redditbot was originally created as a bot for r/starcraft. It grabs a uder-defined number of posts from a user-defined subreddit and checks thread titles for user-defined keywords. If the keywords are present, the bot posts a comment to the thread.
 
 GET STARTED
 ===========

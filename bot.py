@@ -1,5 +1,5 @@
-# This is a reddit bot that browses /r/starcraft and posts helpful links for new players
-# V 0.03
+# This is a reddit bot that browses new threads in a target subreddit and posts comment on threads that contain user-defined keywords
+#V 0.1
 
 import pdb
 import time
@@ -59,77 +59,52 @@ if debug() == False:
 else:
     print "No login during debug"
 
-#cycle = 0
 def handleRateLimit(cycle=1):
     while True:
         try:
             if cycle > 1 and debug() == True:
                 print "Cycled", cycle, "times"   
             x = True
+            found = 0
             
             while x == True:
             
                 submissionPuller = r.get_content(url = 'http://www.reddit.com/r/'+str(dir['subreddit']+'/new/'),
-                limit = int(dir['pollingVal'])) #pulls page data based on subreddit
+                limit = int(dir['pollingVal'])) #grabs comments
                 
                 for submission in submissionPuller:
-                    title = submission.title
+                    title = submission.title #locates title
+                    
                     print title
                     b = True
                     for keyword in dir['keywords']:
                     
                         if b == True:
-                            #pdb.set_trace()
-                            if keyword in submission.title.lower(): #If the title contains a keyword
-                                #submission.add_comment(dir['post']) #post comment
-                                keywordFound = 1
+                            name = ''
+                            if keyword in submission.title.lower(): 
+                                #submission.add_comment(dir['post'])
+                                name = submission.title
+                                del (submission) #checks for keywords in the title; if found, posts comment and deletes submission from list
+                                
                                 print "posted"
                                 b = False
-                                cycle += 1
+                                found += 1
                             else:
                                 print "no post"
                                 b = False
                                 cycle += 1
+                                print cycle, found
+                                with open('hotlist.log', 'w') as burn:
+                                    burn.write(str(name))
+                                time.sleep(.1)
+                                if cycle + found == 1000:
+                                    print "finished them all"
+                                    time.sleep(100)
+                                    x = False
+                                
+                                
         except praw.errors.RateLimitExceeded as error:
             print '\tSleeping for %d seconds' % error.sleep_time
             time.sleep(error.sleep_time)
             
 handleRateLimit()
-
-'''cycle = 0
-
-while True:
-
-    if cycle >= 1 and debug() == True:
-        print "Cycled from hibernate"   
-    x = True
-    
-    while x == True:
-    
-        submissionPuller = r.get_content(url = 'http://www.reddit.com/r/'+str(dir['subreddit']+'/new/'),
-        limit = int(dir['pollingVal'])) #pulls page data based on subreddit
-        
-        for submission in submissionPuller:
-            title = submission.title
-            print title
-            #keywordFound = 0
-            b = True
-            for keyword in dir['keywords']:
-            
-                if b == True:
-                
-                    if keyword in submission.title.lower(): #If the title contains a keyword
-                        submission.add_comment(dir['post']) #post comment
-                        keywordFound = 1
-                        print "posted"
-                        b = False
-                    else:
-                        print "no post"
-                        b = False
-                       
-            #if not keywordFound:
-                #print "No key words found, hibernating for ", hibernate, " seconds."
-                #time.sleep(int(hibernate))
-                #cycle = 1
-                
-'''
